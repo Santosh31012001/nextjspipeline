@@ -14,15 +14,33 @@ pipeline {
                 sh 'npm install'
             }
         }
-         stage('Lint') {
+        stage('Lint') {
             steps {
                 sh 'npm run lint'
             }
         }
-        stage('Build'){
-            steps{
+        stage('Build') {
+            steps {
                 sh 'npm run build'
             }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm run test'  // Runs tests
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh 'npm run test:ci'  // Runs tests optimized for CI/CD
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Tests passed successfully!'
+        }
+        failure {
+            echo 'Tests failed. Check the logs for details.'
         }
     }
 }
