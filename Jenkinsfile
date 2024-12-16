@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'node-18'
+        nodejs 'node-18' // Ensure this matches the correct Node.js version in Jenkins tools configuration
     }
     environment {
         DEPLOY_SERVER = '82.112.226.198'  // Server hostname
@@ -40,14 +40,17 @@ pipeline {
                 sh 'npm run test:ci'
             }
         }
-        stage('Deploy to clouldplayserver') {
+        stage('Deploy to cloudplayserver') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: ' clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                            sshpass -p r#V0C[8NzBLPFiq^NM7Q ssh -o StrictHostKeyChecking=no root@82.112.226.198 << EOF
+                            sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no $USERNAME@$DEPLOY_SERVER << EOF
+                                # Ensure nvm is sourced to use correct Node.js version
+                                source ~/.bashrc
+                                
                                 # Navigate to the deployment directory
-                                cd /root/jenkinswork/nextjspipeline
+                                cd $DEPLOY_PATH
                                 
                                 # Pull the latest code
                                 git pull origin main
@@ -58,7 +61,7 @@ pipeline {
                                 # Build the application
                                 npm run build
                                 
-                                # Restart the Next.js application
+                                # Restart the Next.js application with pm2
                                 pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
                             EOF
                         '''
