@@ -43,11 +43,11 @@ pipeline {
         stage('Deploy to clouldplayserver') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: ' clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                            sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no $USERNAME@${DEPLOY_SERVER} << EOF
+                            sshpass -p r#V0C[8NzBLPFiq^NM7Q ssh -o StrictHostKeyChecking=no root@82.112.226.198 << EOF
                                 # Navigate to the deployment directory
-                                cd ${DEPLOY_PATH}
+                                cd /root/jenkinswork/nextjspipeline
                                 
                                 # Pull the latest code
                                 git pull origin main
