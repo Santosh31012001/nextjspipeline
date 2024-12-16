@@ -44,13 +44,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh '''
-                            sshpass -p r#V0C[8NzBLPFiq^NM7Q ssh -o StrictHostKeyChecking=no $USERNAME@$DEPLOY_SERVER << EOF
-                                # Ensure nvm is sourced to use correct Node.js version
+                        sh """
+                            sshpass -p r#V0C[8NzBLPFiq^NM7Q ssh -o StrictHostKeyChecking=no ${ DEPLOY_USER}@${DEPLOY_SERVER} << EOF
+                                # Ensure nvm is sourced to use the correct Node.js version
                                 source ~/.bashrc
                                 
                                 # Navigate to the deployment directory
-                                cd $DEPLOY_PATH
+                                cd ${DEPLOY_PATH}
                                 
                                 # Pull the latest code
                                 git pull origin main
@@ -64,7 +64,7 @@ pipeline {
                                 # Restart the Next.js application with pm2
                                 pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
                             EOF
-                        '''
+                        """
                     }
                 }
             }
