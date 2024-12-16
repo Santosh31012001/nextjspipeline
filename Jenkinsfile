@@ -55,8 +55,8 @@ pipeline {
                                 # Pull the latest code
                                 git pull origin main
                             
-                                # Install dependencies
-                                npm install 
+                                 # Install dependencies
+                                 # npm install 
                                 
                                 # Build the application
                                 npm run build
