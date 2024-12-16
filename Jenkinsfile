@@ -55,6 +55,8 @@ pipeline {
                                 # Pull the latest code
                                 git pull origin main
                                 
+                                cd nextjspipeline
+                            
                                 # Install dependencies
                                 npm install --production
                                 
