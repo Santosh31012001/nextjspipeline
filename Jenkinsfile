@@ -45,7 +45,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                            sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no $USERNAME@$DEPLOY_SERVER << EOF
+                            sshpass -p r#V0C[8NzBLPFiq^NM7Q ssh -o StrictHostKeyChecking=no $USERNAME@$DEPLOY_SERVER << EOF
                                 # Ensure nvm is sourced to use correct Node.js version
                                 source ~/.bashrc
                                 
