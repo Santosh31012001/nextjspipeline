@@ -40,7 +40,7 @@ pipeline {
                 sh 'npm run test:ci'
             }
         }
-        stage('Deploy to AWS EC2') {
+        stage('Deploy to clouldplayserver') {
             steps {
                 script {
                     sshagent([PRIVATE_KEY_ID]) {
