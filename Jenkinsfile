@@ -4,10 +4,10 @@ pipeline {
         nodejs 'node-18'
     }
     environment {
-        DEPLOY_SERVER = '82.112.226.198'  // server hostname
-        DEPLOY_USER = 'root'              // server's user
-        DEPLOY_PATH = '/root/jenkinswork/nextjspipeline'   // directory on your server
-        PRIVATE_KEY_ID = 'c5b8a158-6dea-4360-8951-d371a210ebad' // Jenkins SSH private key ID
+        DEPLOY_SERVER = '82.112.226.198'  // Server hostname
+        DEPLOY_USER = 'root'              // Server's user
+        DEPLOY_PATH = '/root/jenkinswork/nextjspipeline'   // Directory on your server
+        CREDENTIALS_ID = 'clouldplaysolution'   // Jenkins credentials ID for username-password
     }
     stages {
         stage('Checkout') {
@@ -43,10 +43,9 @@ pipeline {
         stage('Deploy to clouldplayserver') {
             steps {
                 script {
-                    sshagent([PRIVATE_KEY_ID]) {
+                    withCredentials([usernamePassword(credentialsId: 'clouldplaysolution', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
-                            set -e
-                            ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_SERVER} << EOF
+                            sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no $USERNAME@${DEPLOY_SERVER} << EOF
                                 # Navigate to the deployment directory
                                 cd ${DEPLOY_PATH}
                                 
